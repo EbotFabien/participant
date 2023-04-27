@@ -12,8 +12,13 @@ mandataire =Blueprint('mandataire',__name__)
 
 @mandataire.route('/mandataire/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
+    try:
+        id=[doc.to_dict() for doc in man_d.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
+        request.json['id']=str(id)
         todo = man_d.document(id).get()
         if  todo.to_dict() is None :
             man_d.document(id).set(request.json)

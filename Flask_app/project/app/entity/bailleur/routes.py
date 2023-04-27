@@ -12,8 +12,13 @@ bailleur =Blueprint('bailleur',__name__)
 
 @bailleur.route('/bailleur/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
+    try:
+        id=[doc.to_dict() for doc in bai_l.stream()][-1]['id']
+        id=str(int(id)+1)
+    except:
+        id='0'
     if id:
+        request.json['id']=str(id)
         todo = bai_l.document(id).get()
         if  todo.to_dict() is None :
             bai_l.document(id).set(request.json)

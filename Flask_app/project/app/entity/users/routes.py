@@ -2,7 +2,7 @@ from flask import render_template, url_for,flash,redirect,request,abort,Blueprin
 from app import db,bcrypt
 
 
-agent_sec = db.collection('Agentsec')
+agent_sec = db.collection('partcipants')
 
 
 
@@ -10,26 +10,20 @@ agent_sec = db.collection('Agentsec')
 
 users =Blueprint('users',__name__)
 
-@users.route('/Agentsec/ajouter', methods=['POST'])
+@users.route('/participant/ajouter', methods=['POST'])
 def create():
-    id = request.json['id']
-    request.json['pass']=bcrypt.generate_password_hash(request.json['pass']).decode('utf-8')
-    if id:
-        todo = agent_sec.document(id).get()
-        if  todo.to_dict() is None :
-            agent_sec.document(id).set(request.json)
-            return jsonify({"success": True}), 200
-        else:
-            return jsonify({"Fail": "donnee exist deja"}), 400
-    else:
-        return 400
+    temp,parti=agent_sec.add(request.json)
+    todo = agent_sec.document(parti.id).get()
+    todo[id]=parti.id
+    return jsonify(todo.to_dict()), 200
 
-@users.route('/Agentsec/tous', methods=['GET'])
+
+@users.route('/participant/tous', methods=['GET'])
 def read():
     all_todos = [doc.to_dict() for doc in agent_sec.stream()]
     return jsonify(all_todos), 200
 
-@users.route('/Agentsec/<int:ide>', methods=['GET'])
+@users.route('/participant/<ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
     
@@ -40,7 +34,7 @@ def read_ind(ide):
         else:
             return jsonify(todo.to_dict()), 200
 
-@users.route('/Agentsec/update/<int:ide>', methods=['POST', 'PUT'])
+@users.route('/participant/update/<ide>', methods=['POST', 'PUT'])
 def update(ide):
         todo_id = str(ide)
         todo = agent_sec.document(todo_id).get()
@@ -50,7 +44,7 @@ def update(ide):
             agent_sec.document(todo_id).update(request.json)
             return jsonify({"success": True}), 200
 
-@users.route('/Agentsec/delete/<int:ide>', methods=['GET', 'DELETE'])
+@users.route('/participant/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
     todo_id = str(ide)
     todo = agent_sec.document(todo_id).get()
