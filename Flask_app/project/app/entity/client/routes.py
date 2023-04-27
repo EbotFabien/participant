@@ -14,8 +14,9 @@ client =Blueprint('client',__name__)
 def create():
     temp,parti=clien_t.add(request.json)
     todo = clien_t.document(parti.id).get()
-    todo[id]=parti.id
-    return jsonify(todo.to_dict()), 200
+    v=todo.to_dict()
+    v['id']=parti.id
+    return jsonify(v), 200
 
 @client.route('/Client/tous', methods=['GET'])
 def read():

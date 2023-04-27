@@ -14,8 +14,9 @@ users =Blueprint('users',__name__)
 def create():
     temp,parti=agent_sec.add(request.json)
     todo = agent_sec.document(parti.id).get()
-    todo[id]=parti.id
-    return jsonify(todo.to_dict()), 200
+    v=todo.to_dict()
+    v['id']=parti.id
+    return jsonify(v), 200
 
 
 @users.route('/participant/tous', methods=['GET'])

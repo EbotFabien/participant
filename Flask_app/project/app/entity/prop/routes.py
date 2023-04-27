@@ -14,8 +14,10 @@ prop=Blueprint('proprietaire',__name__)
 def create():
     temp,parti=prop_.add(request.json)
     todo = prop_.document(parti.id).get()
-    todo[id]=parti.id
-    return jsonify(todo.to_dict()), 200
+    v=todo.to_dict()
+    v['id']=parti.id
+    return jsonify(v), 200
+    
 
 @prop.route('/info_bancaire/tous', methods=['GET'])
 def read():
