@@ -20,12 +20,23 @@ def create():
 
 @client.route('/Client/tous', methods=['GET'])
 def read():
-    all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in clien_t.stream()]
+    all_todos=[]
+    for doc in clien_t.stream():
+        v=doc.to_dict()
+        v["id"]=doc.id
+        all_todos.append(v)
+    #all_todos = [[doc.to_dict(),doc.id] for doc in clien_t.stream()]
     return jsonify(all_todos), 200
 
 @client.route('/Client/vide', methods=['GET'])
 def empty():
-    all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in clien_t.stream() if doc.to_dict()["utilisateur_id"] == "vide"]
+    all_todos=[]
+    for doc in clien_t.stream():
+        if doc.to_dict()["utilisateur_id"] == "vide":
+            v=doc.to_dict()
+            v["id"]=doc.id
+            all_todos.append(v)
+    #all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in clien_t.stream() if doc.to_dict()["utilisateur_id"] == "vide"]
     return jsonify(all_todos), 200
 
 @client.route('/Client/<ide>', methods=['GET'])
