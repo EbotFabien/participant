@@ -40,7 +40,7 @@ def empty():
     #all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in clien_t.stream() if doc.to_dict()["utilisateur_id"] == "vide"]
     return jsonify(all_todos), 200
 
-@cross_origin(origin=["http://127.0.0.1","http://195.15.228.250","*"],headers=['Content- Type','Authorization'])
+@cross_origin(origin=["http://127.0.0.1","http://195.15.228.250","*"],headers=['Content- Type','Authorization'],automatic_options=False)
 @client.route('/Client/<ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
@@ -52,6 +52,7 @@ def read_ind(ide):
         else:
             return jsonify(todo.to_dict()), 200
 
+@cross_origin(origin=["http://127.0.0.1","http://195.15.228.250","*"],headers=['Content- Type','Authorization'],automatic_options=False)
 @client.route('/Client/update/<ide>', methods=['POST', 'PUT'])
 def update(ide):
         todo_id = str(ide)
