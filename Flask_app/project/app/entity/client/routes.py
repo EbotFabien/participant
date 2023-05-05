@@ -1,5 +1,6 @@
 from flask import render_template, url_for,flash,redirect,request,abort,Blueprint,jsonify
 from app import db
+from flask_cors import CORS,cross_origin
 
 
 clien_t= db.collection('Client')
@@ -39,6 +40,7 @@ def empty():
     #all_todos = [{"data":doc.to_dict(),"id":doc.id} for doc in clien_t.stream() if doc.to_dict()["utilisateur_id"] == "vide"]
     return jsonify(all_todos), 200
 
+@cross_origin(origin=["http://127.0.0.1","http://195.15.228.250","*"],headers=['Content- Type','Authorization'])
 @client.route('/Client/<ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
