@@ -1,5 +1,6 @@
 from flask import render_template, url_for,flash,redirect,request,abort,Blueprint,jsonify
 from app import db,bcrypt
+from firebase_admin import credentials, firestore
 
 
 agent_sec = db.collection('partcipants')
@@ -19,8 +20,24 @@ def create():
     return jsonify(v), 200
 
 
-@users.route('/participant/tous', methods=['GET'])
-def read():
+@users.route('/participant/tous/<start>/<limit>', methods=['GET'])
+def read(start,limit):
+    if start !='0':
+        last_doc=agent_sec.document(start).get()
+        last_email=last_doc.to_dict()['email']   
+        last_tel=last_doc.to_dict()['telephone']   
+        sec=agent_sec.order_by('email').order_by('telephone').start_after({'email':last_email,'telephone':last_tel}).limit(int(limit))
+        
+        all_todos = [doc.to_dict() for doc in sec.stream()]
+        return jsonify(all_todos), 200
+    else:
+        sec=agent_sec.order_by('email', direction=firestore.Query.ASCENDING).order_by('telephone', direction=firestore.Query.ASCENDING).limit(int(limit))
+        all_todos = [doc.to_dict() for doc in sec.stream()]
+        return jsonify(all_todos), 200
+        #all_todos = [doc.to_dict() for doc in agent_sec.stream()]
+    
+    return  401
+
     all_todos = [doc.to_dict() for doc in agent_sec.stream()]
     return jsonify(all_todos), 200
 
