@@ -21,8 +21,15 @@ def create():
 
 @users.route('/participant/tous', methods=['GET'])
 def read():
-    all_todos = [doc.to_dict() for doc in agent_sec.stream()]
+    #all_todos = [doc.to_dict() for doc in agent_sec.stream()]
+    all_todos=[]
+    for doc in agent_sec.stream():
+        #if doc.to_dict()["utilisateur_id"] == "vide":
+        v=doc.to_dict()
+        v["id"]=doc.id
+        all_todos.append(v)
     return jsonify(all_todos), 200
+    
 
 @users.route('/participant/<ide>', methods=['GET'])
 def read_ind(ide):
