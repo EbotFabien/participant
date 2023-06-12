@@ -50,7 +50,9 @@ def read_ind(ide):
         if todo.to_dict() is None:
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
-            return jsonify(todo.to_dict()), 200
+            v=todo.to_dict()
+            v["id"]=todo.to_dict()
+            return jsonify(v), 200
 
 @cross_origin(origin=["http://127.0.0.1","http://195.15.228.250","*"],headers=['Content- Type','Authorization'],automatic_options=False)
 @client.route('/Client/update/<ide>', methods=['POST', 'PUT'])
