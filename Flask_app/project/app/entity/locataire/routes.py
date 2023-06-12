@@ -2,15 +2,15 @@ from flask import render_template, url_for,flash,redirect,request,abort,Blueprin
 from app import db
 
 
-loc_a = db.collection('locataire')
+loc_a = db.collection('extension')
 
 
 
 
 
-locataire =Blueprint('locataire',__name__)
+extension =Blueprint('extension',__name__)
 
-@locataire.route('/locataire/ajouter', methods=['POST'])
+@extension.route('/extension/ajouter', methods=['POST'])
 def create():
     try:
         id=[doc.to_dict() for doc in loc_a.stream()][-1]['id']
@@ -28,12 +28,18 @@ def create():
     else:
         return 400
 
-@locataire.route('/locataire/tous', methods=['GET'])
+@extension.route('/extension/tous', methods=['GET'])
 def read():
-    all_todos = [doc.to_dict() for doc in loc_a.stream()]
-    return jsonify(all_todos), 200
+    all_todos = []
+    #return jsonify(all_todos), 200
+    for doc in loc_a.stream():
+            v=doc.to_dict()
+            v["id"]=doc.id
+            all_todos.append(v)
+        #all_todos = [[doc.to_dict(),doc.id] for doc in clien_t.stream()]
+            return jsonify(all_todos), 200
 
-@locataire.route('/locataire/<int:ide>', methods=['GET'])
+@extension.route('/extension/<int:ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
     
@@ -44,7 +50,7 @@ def read_ind(ide):
         else:
             return jsonify(todo.to_dict()), 200
 
-@locataire.route('/locataire/update/<int:ide>', methods=['POST', 'PUT'])
+@extension.route('/extension/update/<int:ide>', methods=['POST', 'PUT'])
 def update(ide):
         todo_id = str(ide)
         todo = loc_a.document(todo_id).get()
@@ -54,7 +60,7 @@ def update(ide):
             loc_a.document(todo_id).update(request.json)
             return jsonify({"success": True}), 200
 
-@locataire.route('/locataire/delete/<int:ide>', methods=['GET', 'DELETE'])
+@extension.route('/extension/delete/<int:ide>', methods=['GET', 'DELETE'])
 def delete(ide):
     todo_id = str(ide)
     todo = loc_a.document(todo_id).get()

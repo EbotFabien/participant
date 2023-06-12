@@ -2,15 +2,15 @@ from flask import render_template, url_for,flash,redirect,request,abort,Blueprin
 from app import db
 
 
-don_d = db.collection('donneur')
+don_d = db.collection('voie')
 
 
 
 
 
-donneur =Blueprint('donneur',__name__)
+voie =Blueprint('voie',__name__)
 
-@donneur.route('/donneur/ajouter', methods=['POST'])
+@voie.route('/voie/ajouter', methods=['POST'])
 def create():
     try:
         id=[doc.to_dict() for doc in don_d.stream()][-1]['id']
@@ -28,12 +28,18 @@ def create():
     else:
         return 400
 
-@donneur.route('/donneur/tous', methods=['GET'])
+@voie.route('/voie/tous', methods=['GET'])
 def read():
-    all_todos = [doc.to_dict() for doc in don_d.stream()]
-    return jsonify(all_todos), 200
+    all_todos = []
+    #return jsonify(all_todos), 200
+    for doc in don_d.stream():
+            v=doc.to_dict()
+            v["id"]=doc.id
+            all_todos.append(v)
+        #all_todos = [[doc.to_dict(),doc.id] for doc in clien_t.stream()]
+            return jsonify(all_todos), 200
 
-@donneur.route('/donneur/<int:ide>', methods=['GET'])
+@voie.route('/voie/<int:ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
     
@@ -44,7 +50,7 @@ def read_ind(ide):
         else:
             return jsonify(todo.to_dict()), 200
 
-@donneur.route('/donneur/update/<int:ide>', methods=['POST', 'PUT'])
+@voie.route('/voie/update/<int:ide>', methods=['POST', 'PUT'])
 def update(ide):
         todo_id = str(ide)
         todo = don_d.document(todo_id).get()
@@ -54,7 +60,7 @@ def update(ide):
             don_d.document(todo_id).update(request.json)
             return jsonify({"success": True}), 200
 
-@donneur.route('/donneur/delete/<int:ide>', methods=['GET', 'DELETE'])
+@voie.route('/voie/delete/<int:ide>', methods=['GET', 'DELETE'])
 def delete(ide):
     todo_id = str(ide)
     todo = don_d.document(todo_id).get()

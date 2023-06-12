@@ -44,19 +44,19 @@ def create_app(config_class=Config):
     from app.entity.users.routes import users
     from app.entity.agentc.routes import agentcon
     from app.entity.mandataire.routes import mandataire
-    from app.entity.locataire.routes import locataire
+    from app.entity.locataire.routes import extension
     from app.entity.bailleur.routes import bailleur
     from app.entity.client.routes import client
-    from app.entity.donneurd.routes import donneur
+    from app.entity.donneurd.routes import voie
     from app.entity.prop.routes import prop
     
     app.register_blueprint(users)
     app.register_blueprint(agentcon)
     app.register_blueprint(mandataire)
-    app.register_blueprint(locataire)
+    app.register_blueprint(extension)
     app.register_blueprint(bailleur)
     app.register_blueprint(client)
-    app.register_blueprint(donneur)
+    app.register_blueprint(voie)
     app.register_blueprint(prop)
     
 
