@@ -39,7 +39,7 @@ def read():
         #all_todos = [[doc.to_dict(),doc.id] for doc in clien_t.stream()]
     return jsonify(all_todos), 200
 
-@voie.route('/voie/<int:ide>', methods=['GET'])
+@voie.route('/voie/<ide>', methods=['GET'])
 def read_ind(ide):
     todo_id = str(ide)
     

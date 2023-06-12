@@ -47,6 +47,8 @@ def read():
         #if doc.to_dict()["utilisateur_id"] == "vide":
         v=doc.to_dict()
         v["id"]=doc.id
+        v["extension_de_la_voie"]= url_for('locataire.read_ind', ide=v["extension_de_la_voie"])
+        v["type_de_voie"]=url_for('donneurd.read_ind', ide=v["extension_de_la_voie"])
         all_todos.append(v)
     return jsonify(all_todos), 200
     
