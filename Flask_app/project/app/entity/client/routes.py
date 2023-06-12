@@ -51,7 +51,7 @@ def read_ind(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             v=todo.to_dict()
-            v["id"]=todo.to_dict()
+            v["id"]=ide
             return jsonify(v), 200
 
 @cross_origin(origin=["http://127.0.0.1","http://195.15.228.250","*"],headers=['Content- Type','Authorization'],automatic_options=False)
