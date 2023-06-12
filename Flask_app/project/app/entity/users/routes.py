@@ -19,7 +19,7 @@ def create():
     v['id']=parti.id
     return jsonify(v), 200
 
-
+"""
 @users.route('/participant/tous/<start>/<limit>', methods=['GET'])
 def read(start,limit):
     if start !='0':
@@ -38,8 +38,18 @@ def read(start,limit):
     
     return  401
 
-    all_todos = [doc.to_dict() for doc in agent_sec.stream()]
+    all_todos = [doc.to_dict() for doc in agent_sec.stream()]"""
+@users.route('/participant/tous', methods=['GET'])
+def read():
+    #all_todos = [doc.to_dict() for doc in agent_sec.stream()]
+    all_todos=[]
+    for doc in agent_sec.stream():
+        #if doc.to_dict()["utilisateur_id"] == "vide":
+        v=doc.to_dict()
+        v["id"]=doc.id
+        all_todos.append(v)
     return jsonify(all_todos), 200
+    
 
 @users.route('/participant/<ide>', methods=['GET'])
 def read_ind(ide):
