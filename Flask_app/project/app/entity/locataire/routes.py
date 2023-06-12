@@ -2,7 +2,7 @@ from flask import render_template, url_for,flash,redirect,request,abort,Blueprin
 from app import db
 
 
-loc_a = db.collection('extension')
+loc_a = db.collection('Extension')
 
 
 
