@@ -37,7 +37,7 @@ def read():
             v["id"]=doc.id
             all_todos.append(v)
         #all_todos = [[doc.to_dict(),doc.id] for doc in clien_t.stream()]
-            return jsonify(all_todos), 200
+    return jsonify(all_todos), 200
 
 @extension.route('/extension/<int:ide>', methods=['GET'])
 def read_ind(ide):
