@@ -48,7 +48,9 @@ def read_ind(ide):
         if todo.to_dict() is None:
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
-            return jsonify(todo.to_dict()), 200
+            v=todo.to_dict()
+            v["id"]=ide
+            return jsonify(v), 200
 
 @extension.route('/extension/update/<int:ide>', methods=['POST', 'PUT'])
 def update(ide):

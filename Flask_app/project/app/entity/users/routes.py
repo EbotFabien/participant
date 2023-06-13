@@ -1,7 +1,7 @@
 from flask import render_template, url_for,flash,redirect,request,abort,Blueprint,jsonify
 from app import db,bcrypt
 from firebase_admin import credentials, firestore
-
+import requests
 
 agent_sec = db.collection('partcipants')
 
@@ -47,8 +47,16 @@ def read():
         #if doc.to_dict()["utilisateur_id"] == "vide":
         v=doc.to_dict()
         v["id"]=doc.id
-        #v["extension_de_la_voie"]= url_for('locataire.read_ind', ide=v["extension_de_la_voie"])
-        #v["type_de_voie"]=url_for('donneurd.read_ind', ide=v["extension_de_la_voie"])
+        
+        URL="http://127.0.0.1:5000/extension/"+v["extension_de_la_voie"]
+        r = requests.get(url=URL)
+          
+        v["extension_de_la_voie"]=r.json()
+    
+        URL="http://127.0.0.1:5000/voie/"+v["type_de_voie"]
+        r = requests.get(url=URL)
+        v["type_de_voie"]=r.json()
+        
         all_todos.append(v)
     return jsonify(all_todos), 200
     
