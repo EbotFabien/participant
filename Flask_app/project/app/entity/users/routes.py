@@ -48,12 +48,12 @@ def read():
         v=doc.to_dict()
         v["id"]=doc.id
         
-        URL="http://127.0.0.1:5000/extension/"+v["extension_de_la_voie"]
+        URL="http://195.15.218.172/participant/extension/"+v["extension_de_la_voie"]
         r = requests.get(url=URL)
           
         v["extension_de_la_voie"]=r.json()
     
-        URL="http://127.0.0.1:5000/voie/"+v["type_de_voie"]
+        URL="http://195.15.218.172/participant/voie/"+v["type_de_voie"]
         r = requests.get(url=URL)
         v["type_de_voie"]=r.json()
         
