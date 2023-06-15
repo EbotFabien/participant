@@ -63,7 +63,13 @@ def update(ide):
             return jsonify({"Fail": "donnee n'exist pas"}), 400
         else:
             clien_t.document(todo_id).update(request.json)
-            return jsonify({"success": True}), 200
+            todo = clien_t.document(ide).get()
+            final_= todo.to_dict()
+            
+            final_["id"] = ide
+            
+            return jsonify(final_), 200
+            
 
 @client.route('/Client/delete/<ide>', methods=['GET', 'DELETE'])
 def delete(ide):
