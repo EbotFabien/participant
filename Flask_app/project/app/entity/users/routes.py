@@ -59,6 +59,51 @@ def read():
         
         all_todos.append(v)
     return jsonify(all_todos), 200
+
+
+@users.route('/participant/tous/user/<ide>', methods=['GET'])
+def read_user(ide):
+    #all_todos = [doc.to_dict() for doc in agent_sec.stream()]
+    all_todos=[]
+    for doc in agent_sec.stream():
+        #if doc.to_dict()["utilisateur_id"] == "vide":
+        v=doc.to_dict()
+        if v["iduser"] == ide:
+            v["id"]=doc.id
+            
+            URL="http://195.15.218.172/participant/extension/"+v["extension_de_la_voie"]
+            r = requests.get(url=URL)
+            
+            v["extension_de_la_voie"]=r.json()
+        
+            URL="http://195.15.218.172/participant/voie/"+v["type_de_voie"]
+            r = requests.get(url=URL)
+            v["type_de_voie"]=r.json()
+            
+            all_todos.append(v)
+    return jsonify(all_todos), 200
+
+@users.route('/participant/tous/client/<ide>', methods=['GET'])
+def read_client(ide):
+    #all_todos = [doc.to_dict() for doc in agent_sec.stream()]
+    all_todos=[]
+    for doc in agent_sec.stream():
+        #if doc.to_dict()["utilisateur_id"] == "vide":
+        v=doc.to_dict()
+        if v["compte_client"]["_id"] == ide:
+            v["id"]=doc.id
+            
+            URL="http://195.15.218.172/participant/extension/"+v["extension_de_la_voie"]
+            r = requests.get(url=URL)
+            
+            v["extension_de_la_voie"]=r.json()
+        
+            URL="http://195.15.218.172/participant/voie/"+v["type_de_voie"]
+            r = requests.get(url=URL)
+            v["type_de_voie"]=r.json()
+            
+            all_todos.append(v)
+    return jsonify(all_todos), 200
     
 
 @users.route('/participant/<ide>', methods=['GET'])
